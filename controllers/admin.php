@@ -31,15 +31,20 @@ class Admin extends SessionController
             $name = $this->getPost("name");
             $color = $this->getPost("color");
 
-            $categoriesModel = new CategoriesModel();
-            if (!$categoriesModel->exists($name)) {
-                $categoriesModel->setName($name);
-                $categoriesModel->setColor($color);
-                $categoriesModel->save();
+            //validacion de datos
+            if (preg_match('/^[\w+0-9 ]+$/', $name)) {
+                $categoriesModel = new CategoriesModel();
+                if (!$categoriesModel->exists($name)) {
+                    $categoriesModel->setName(trim($name));
+                    $categoriesModel->setColor($color);
+                    $categoriesModel->save();
 
-                $this->redirect("admin", ["success" =>SuccessMessages::SUCCESS_ADMIN_NEWCATEGORY]); 
+                    $this->redirect("admin", ["success" => SuccessMessages::SUCCESS_ADMIN_NEWCATEGORY]);
+                } else {
+                    $this->redirect("admin", ["error" => ErrorMessages::ERROR_ADMIN_NEWCATEGORY_EXISTS]);
+                }
             } else {
-                $this->redirect("admin", ["error" =>ErrorMessages::ERROR_ADMIN_NEWCATEGORY_EXISTS]); 
+                $this->redirect("admin", ["error" => ErrorMessages::ERROR_SANITIZING_FIELDS]);
             }
         }
     }

@@ -54,10 +54,15 @@ class User extends SessionController
             return;
         }
 
-        $this->user->setName($name);
+        //validacion de datos
+        if (preg_match('/^[\w+0-9]+$/', $name)) {
+            $this->user->setName(trim($name));
 
-        if ($this->user->update()) {
-            $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATENAME]);
+            if ($this->user->update()) {
+                $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATENAME]);
+            }
+        } else {
+            $this->redirect("signup", ["error" => ErrorMessages::ERROR_SANITIZING_FIELDS]);
         }
     }
 
@@ -71,29 +76,39 @@ class User extends SessionController
         $current = $this->getPost("current_password");
         $new = $this->getPost("new_password");
 
-        if (empty($current) || empty($new)) {
-            $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
-        }
+        //validacion de datos
+        if (
+            preg_match('/^[\w+0-9]+$/', $current)
+            && preg_match('/^[\w+0-9]+$/', $new)
+        ) {
 
-        if ($current === $new) {
-            $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME]);
-            return;
-        }
+            if (empty($current) || empty($new)) {
+                $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY]);
+            }
 
-        $newHash = $this->model->comparePasswords($current, $this->user->getId());
-        if ($newHash) {
-            $this->user->setPassword($new);
-
-            if ($this->user->update()) {
-                $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
+            if ($current === $new) {
+                $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME]);
                 return;
+            }
+
+
+            $newHash = $this->model->comparePasswords($current, $this->user->getId());
+            if ($newHash) {
+                $this->user->setPassword($new);
+
+                if ($this->user->update()) {
+                    $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATEPASSWORD]);
+                    return;
+                } else {
+                    $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
+                    return;
+                }
             } else {
                 $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
                 return;
             }
         } else {
-            $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPASSWORD]);
-            return;
+            $this->redirect("user", ["error" => ErrorMessages::ERROR_SANITIZING_FIELDS]);
         }
     }
 
@@ -110,33 +125,37 @@ class User extends SessionController
         $extension = explode(".", $photo["name"]);
         $filename = $extension[sizeof($extension) - 2];
         $ext = $extension[sizeof($extension) - 1];
-        //hash para el nombre del archivo
-        $hash = md5(Date("Ymdgi" . $filename)) . "." . $ext;
-        $targetFile = $targetDir . $hash;
-        $uploadOk = false;
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-        //obtener el tamaño de foto 
-        $check = getimagesize($photo["tmp_name"]);
-        if ($check !== false) {
-            $uploadOk = true;
-        } else {
+        if (((strcasecmp($ext, "gif") || strcasecmp($ext, "jpeg") || strcasecmp($ext, "jpg") || strcasecmp($ext, "png") || strcasecmp($ext, "webp")))) {
+            //hash para el nombre del archivo
+            $hash = md5(Date("Ymdgi" . $filename)) . "." . $ext;
+            $targetFile = $targetDir . $hash;
             $uploadOk = false;
-        }
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        if (!$uploadOk) {
-            $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT]);
-            return;
-        } else {
-            if (move_uploaded_file($photo["tmp_name"], $targetFile)) {
-                $this->user->setPhoto($hash);
-                $this->user->update();
-                $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATEPHOTO]);
+            //obtener el tamaño de foto 
+            $check = getimagesize($photo["tmp_name"]);
+            if ($check !== false) {
+                $uploadOk = true;
+            } else {
+                $uploadOk = false;
+            }
+
+            if (!$uploadOk) {
+                $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT]);
                 return;
             } else {
-                $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
-                return;
+                if (move_uploaded_file($photo["tmp_name"], $targetFile)) {
+                    $this->user->setPhoto($hash);
+                    $this->user->update();
+                    $this->redirect("user", ["success" => SuccessMessages::SUCCESS_USER_UPDATEPHOTO]);
+                    return;
+                } else {
+                    $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPHOTO]);
+                    return;
+                }
             }
+        } else {
+            $this->redirect("user", ["error" => ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT]);
         }
     }
 }

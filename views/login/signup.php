@@ -20,11 +20,12 @@
 
             <p>
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username">
+                <input type="text" name="username" id="username" pattern="[A-Za-z0-9]+" title="Solo se permiten caracateres alfanuméricos" require>
+                <!-- <input type="text" name="username" id="username"> -->
             </p>
             <p>
                 <label for="password">password</label>
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" id="password" require>
             </p>
             <p>
                 <input type="submit" value="Registrar" />

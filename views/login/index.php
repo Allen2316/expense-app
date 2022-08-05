@@ -19,11 +19,13 @@
 
             <p>
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" autocomplete="off">
+                <input type="text" name="username" id="username" autocomplete="off" pattern="[A-Za-z0-9]+" title="Solo se permiten caracateres alfanuméricos" require>
+                <!-- <input type="text" name="username" id="username" autocomplete="off"> -->
             </p>
             <p>
                 <label for="password">password</label>
-                <input type="password" name="password" id="password" autocomplete="off">
+                <input type="password" name="password" id="password" autocomplete="off" require>
+                <!-- <input type="password" name="password" id="password" autocomplete="off" > -->
             </p>
             <p>
                 <input type="submit" value="Iniciar sesión" />
@@ -33,7 +35,7 @@
                 ¿No tienes cuenta? <a href="<?php echo constant('URL'); ?>signup">Registrarse</a>
             </p>
         </form>
-    </div>
+    </div>    
 </body>
 
 </html>

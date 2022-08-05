@@ -17,7 +17,7 @@
                 <?php if ($user->getPhoto() == '') { ?>
                     <i class="material-icons">account_circle</i>
                 <?php } else { ?>
-                    <img src="<?php echo constant('URL'); ?>public/img/photos/<?php echo $user->getPhoto() ?>" width="32" />
+                    <img src="<?php echo constant('URL'); ?>public/img/photos/<?php echo $user->getPhoto() ?>" />
                 <?php }  ?>
             </div>
         </a>

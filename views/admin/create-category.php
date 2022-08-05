@@ -6,7 +6,8 @@
     <h3>Registrar nueva categoria</h3>
     <div class="section">
         <label for="amount">Nombre</label>
-        <input type="text" name="name" id="color" autocomplete="off" required>
+        <!-- <input type="text" name="name" id="color" autocomplete="off" pattern="[^><\]\[\}\{()]+" title="Solo se permiten caracateres alfanuméricos" required> -->
+            <input type="text" name="name" id="color" autocomplete="off">
     </div>
     <div class="section">
         <label for="title">Color</label>

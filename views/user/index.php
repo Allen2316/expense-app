@@ -13,7 +13,7 @@ $user = $this->d['user'];
 
 <body>
     <?php require_once 'views/dashboard/header.php'; ?>
-
+    <?php $this->showMessages(); ?>
     <div id="main-container">
 
         <div id="user-container" class="container">
@@ -43,7 +43,7 @@ $user = $this->d['user'];
                     <form action=<?php echo constant('URL') . 'user/updateName' ?> method="POST">
                         <div class="section">
                             <label for="name">Nombre</label>
-                            <input type="text" name="name" id="name" autocomplete="off" required value="">
+                            <input type="text" name="name" id="name" autocomplete="off" required value="" pattern="[^><\]\[\}\{()]+" title="Solo se permiten caracateres alfanuméricos">
                             <div><input type="submit" value="Cambiar nombre" /></div>
                         </div>
                     </form>

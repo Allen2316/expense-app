@@ -22,20 +22,28 @@ class Signup extends SessionController
             if ($username == '' || empty($username) || $password == '' || empty($password)) {
                 $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EMPTY]);
             } else {
-                // Si los valores estan correctos. guardar la base de datos.
-                $user = new UserModel();
-                $user->setUsername($username);
-                $user->setPassword($password);
-                $user->setRole('user');
+                //validacion de datos
+                if (
+                    preg_match('/^[\w+0-9]+$/', $username)
+                    && preg_match('/^[0-9a-zA-Z]+$/', $password)
+                ) {
+                    // Si los valores estan correctos. guardar la base de datos.
+                    $user = new UserModel();
+                    $user->setUsername($username);
+                    $user->setPassword($password);
+                    $user->setRole('user');
 
-                //Si existe el usuario.
-                if ($user->exists($username)) {
-                    $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS]);
-                } else if ($user->save()) {
-                    //Si no existe guardar y mandar al index con un mensaje de success.
-                    $this->redirect('', ['success' => SuccessMessages::SUCCESS_SIGNUP_NEWUSER]);
+                    //Si existe el usuario.
+                    if ($user->exists($username)) {
+                        $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER_EXISTS]);
+                    } else if ($user->save()) {
+                        //Si no existe guardar y mandar al index con un mensaje de success.
+                        $this->redirect('', ['success' => SuccessMessages::SUCCESS_SIGNUP_NEWUSER]);
+                    } else {
+                        $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER]);
+                    }
                 } else {
-                    $this->redirect('signup', ['error' => ErrorMessages::ERROR_SIGNUP_NEWUSER]);
+                    $this->redirect("signup", ["error" => ErrorMessages::ERROR_SANITIZING_FIELDS]);
                 }
             }
         } else {

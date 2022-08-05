@@ -9,6 +9,7 @@ class ErrorMessages
     const ERROR_EXPENSES_DELETE                 = "8f48a0845b4f8704cb7e8b00d4981233";
     const ERROR_EXPENSES_NEWEXPENSE             = "8f48a0845b4f8704cb7e8b00d4981233";
     const ERROR_EXPENSES_NEWEXPENSE_EMPTY       = "a5bcd7089d83f45e17e989fbc86003ed";
+    const ERROR_SANITIZING_FIELDS               = "2d6788f2408c6d81f8ae731841cba7bb";
     const ERROR_USER_UPDATEBUDGET               = "e99ab11bbeec9f63fb16f46133de85ec";
     const ERROR_USER_UPDATEBUDGET_EMPTY         = "807f75bf7acec5aa86993423b6841407";
     const ERROR_USER_UPDATENAME_EMPTY           = "0f0735f8603324a7bca482debdf088fa";
@@ -34,13 +35,14 @@ class ErrorMessages
             ErrorMessages::ERROR_EXPENSES_DELETE           => "Hubo un problema el eliminar el gasto, inténtalo de nuevo",
             ErrorMessages::ERROR_EXPENSES_NEWEXPENSE       => "Hubo un problema al crear el gasto, inténtalo de nuevo",
             ErrorMessages::ERROR_EXPENSES_NEWEXPENSE_EMPTY => "Los campos no pueden estar vacíos",
+            ErrorMessages::ERROR_SANITIZING_FIELDS => "Solo se permiten caracteres alfanuméricos",
             ErrorMessages::ERROR_USER_UPDATEBUDGET         => "No se puede actualizar el presupuesto",
             ErrorMessages::ERROR_USER_UPDATEBUDGET_EMPTY   => "El presupuesto no puede estar vacio o ser negativo",
             ErrorMessages::ERROR_USER_UPDATENAME_EMPTY     => "El nombre no puede estar vacio o ser negativo",
             ErrorMessages::ERROR_USER_UPDATENAME           => "No se puede actualizar el nombre",
             ErrorMessages::ERROR_USER_UPDATEPASSWORD       => "No se puede actualizar la contraseña",
             ErrorMessages::ERROR_USER_UPDATEPASSWORD_EMPTY => "El nombre no puede estar vacio o ser negativo",
-            ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME => "Los passwords no son los mismos",
+            ErrorMessages::ERROR_USER_UPDATEPASSWORD_ISNOTTHESAME => "Los passwords son los mismos",
             ErrorMessages::ERROR_USER_UPDATEPHOTO          => "Hubo un error al actualizar la foto",
             ErrorMessages::ERROR_USER_UPDATEPHOTO_FORMAT   => "El archivo no es una imagen",
             ErrorMessages::ERROR_LOGIN_AUTHENTICATE        => "Hubo un problema al autenticarse",

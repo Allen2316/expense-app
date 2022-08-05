@@ -8,12 +8,13 @@ $categories = $this->d['categories'];
 <form id="form-expense-container" action="expenses/newExpense" method="POST">
     <h3>Registrar nuevo gasto</h3>
     <div class="section">
-        <label for="amount">Cantidad</label>
+        <label for="amount">Gasto en $</label>
         <input type="number" name="amount" id="amount" autocomplete="off" required>
     </div>
     <div class="section">
         <label for="title">Descripción</label>
-        <div><input type="text" name="title" autocomplete="off" required></div>
+        <div><input type="text" name="title" autocomplete="off" pattern="[^><\]\[\}\{()]+" title="Solo se permiten alfanumericos" required></div>
+            <!-- <div><input type="text" name="title" autocomplete="off"></div> -->
     </div>
 
     <div class="section">

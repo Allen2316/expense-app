@@ -38,16 +38,22 @@ class Expenses extends SessionController
             return;
         }
 
-        $expense = new ExpensesModel();
+        //validacion de datos
+        if (preg_match('/^[\w+ ]+$/', $this->getPost("title"))) {
 
-        $expense->setTitle($this->getPost("title"));
-        $expense->setAmount($this->getPost("amount"));
-        $expense->setCategoryid($this->getPost("category"));
-        $expense->setDate($this->getPost("date"));
-        $expense->setUserid($this->user->getId());
+            $expense = new ExpensesModel();
 
-        $expense->save();
-        $this->redirect("dashboard", ["success" => SuccessMessages::SUCCESS_EXPENSES_NEWEXPENSE]);
+            $expense->setTitle(trim($this->getPost("title")));
+            $expense->setAmount($this->getPost("amount"));
+            $expense->setCategoryid($this->getPost("category"));
+            $expense->setDate($this->getPost("date"));
+            $expense->setUserid($this->user->getId());
+
+            $expense->save();
+            $this->redirect("dashboard", ["success" => SuccessMessages::SUCCESS_EXPENSES_NEWEXPENSE]);
+        }else{
+            $this->redirect("dashboard", ["error" => ErrorMessages::ERROR_SANITIZING_FIELDS]);            
+        }
     }
 
 
